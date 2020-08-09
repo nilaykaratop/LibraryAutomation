@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bc87c86b188c43068b5a47df9586360b" Name="Diagram1">
+        <EntityTypeShape EntityType="BooksModel.BookList" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BooksModel.AuthorList" Width="1.5" PointX="4.625" PointY="0.875" />
+        <EntityTypeShape EntityType="BooksModel.sysdiagrams" Width="1.5" PointX="8" PointY="0.875" />
+        <AssociationConnector Association="BooksModel.FK_BookList_AuthorList1" ManuallyRouted="true" >
+          <ConnectorPoint PointX="4.625" PointY="1.6728417968749998" />
+          <ConnectorPoint PointX="3.84125" PointY="1.6728417968749998" />
+          <ConnectorPoint PointX="3.84125" PointY="2.9202376302083333" />
+          <ConnectorPoint PointX="2.3940541666666668" PointY="2.9202376302083333" />
+          <ConnectorPoint PointX="2.3940541666666668" PointY="1.6728417968749998" />
+          <ConnectorPoint PointX="2.25" PointY="1.6728417968749998" />
+        </AssociationConnector>
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

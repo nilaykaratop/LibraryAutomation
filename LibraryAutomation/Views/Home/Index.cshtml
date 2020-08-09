@@ -1,0 +1,246 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>KİTAP LİSTESİ</h2>
+<link href="../Content/bootstrap.min.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<body>
+    <div class="container">
+        <div class="row rounded">
+            <div class="col col-md-4 ">
+                <form action="">
+                    <input type="hidden" name="ID" />
+                    <div class="form-group">
+                        <label for="BookTitle" class="mt-3">Kitap İsmi</label>
+                        <input type="text" name="BookTitle" id="BookTitle" class="form-control"
+                               placeholder="Kitap İsmi Giriniz">
+                    </div>
+                    <div class="form-group">
+                        <label for="AuthorName">Yazar İsmi</label>
+                        <input type="text" name="AuthorName" id="AuthorName" class="form-control"
+                               placeholder="Yazar İsmi Giriniz">
+                    </div>
+                    <div class="form-group">
+                        <label for="Publisher">Yayınevi</label>
+                        <input type="text" name="Publisher" id="Publisher" class="form-control"
+                               placeholder="Yayınevi Giriniz">
+                    </div>
+                    <div class="form-group">
+                        <label for="Summary">Özet</label>
+                        <input type="text" name="Summary" id="Summary" class="form-control"
+                               placeholder="Özeti Giriniz">
+                    </div>
+                    <div class="form-group">
+                        <label for="Language">Kitabın Dili</label>
+                        <input type="text" name="Language" id="Language" class="form-control"
+                               placeholder="Kitap Dilini Giriniz">
+                    </div>
+                    <div class="form-group">
+                        <label for="PageCount">Sayfa Sayısı</label>
+                        <input type="text" name="PageCount" id="PageCount" class="form-control"
+                               placeholder="Sayfa Sayısı Giriniz">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-outline-success" id="save">Kaydet</button>
+                        <button type="button" class="btn btn-outline-success" id="update">güncelle</button>
+                        <button type="reset" class="btn btn-outline-danger">Temizle</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col ">
+                <div class="table table-hover">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="d-none">ID</th>
+                                <th class="text text-primary">KİTAP İSMİ</th>
+                                <th class="text text-primary">YAZAR İSMİ</th>
+                                <th class="text text-primary">YAYINEVİ</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detailModal">Kitap Detay Kartı</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="Summary">Özet</label>
+                                <span class="font-wight-light" id="Summary"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="PageCount">Sayfa Sayısı</label>
+                                <span class="font-wight-light" id="PageCount"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="Language">Kitabın Dili</label>
+                                <span class="font-wight-light" id="Language"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary shadow-sm text-warning"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
+    <script>
+        $(function () {
+            function Template(e) {
+                const template = `
+                                                    <tr>
+                                                        <td class="d-none">${e.id}</td>
+                                                        <td>${e.BookTitle}</td>
+                                                        <td>${e.AuthorName}</td>
+                                                        <td>${e.Publisher}</td>
+
+
+
+                                            <td>
+                                                <button class="btn shadow-sm text-info info" data-id="${e.ID}"><i class="fas fa-search"></i></button>
+
+                                                <button class="btn shadow-sm text-warning edit" data-id="${e.ID}" >
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </button>
+                                                <button class="btn shadow-sm text-success delete" data-id="${e.ID}"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                                    </tr>`;
+                return template;
+            }
+            //<button class="btn shadow-sm text-warning edit data-id=${e.ID}" onclick="window.setTimeout(function(){location.href = 'https://localhost:44328/home/edit/';});">
+           // <i class="fas fa-pencil-alt"></i> </button>
+
+            const _url = "https://localhost:44392/api/book/GetAllBooks";
+            const postUrl = "https://localhost:44392/api/book/AddBook";
+            const infoUrl = "https://localhost:44392/api/book/BookByID/";
+            const editUrl = "https://localhost:44392/Home/Edit/";
+            //const editUrl = "https://localhost:44392/api/book/edit/"
+            const deleteUrl ="https://localhost:44392/api/book/Delete/"
+
+
+
+            function Load() {
+                $.getJSON(_url, function (data) {
+                    var items = [];
+                    data.map((x) => items.push(Template(x)));
+                    $("table tbody").html(items.join());
+                });
+            }
+            Load();
+
+            $("#save").click(function () {
+                $.ajax({
+                    url: postUrl,
+                    type: "post",
+                    dataType: "json",
+                    data: $("form").serialize(),
+                    success: function (response) {
+                        Load();
+                        alert("Kitap Başarıyla Kaydedildi.");
+                        $("form")[0].reset();
+                    },
+                    error: function (err) {
+                        alert("Bir Hata İle Karşılaşıldı.");
+                    }
+
+                })
+            })
+
+            $(document).on("click", ".info", function () {
+
+                const id = $(this).data("id");
+                $.ajax({
+                    url: `${infoUrl}${id}`,
+                    type: "get",
+                    dataType: "json",
+                    success: function (response) {
+                        for (var p in response) {
+                            $(`label[for='${p}']`).text(p + " : ");
+                            $(`span[id='${p}']`).text(response[p]);
+                        }
+                        $("#detailModal").modal("show");
+                    },
+                    error: function (err) { }
+                })
+            })
+            $(document).on("click", ".edit", function () {
+                const id = $(this).data("id");
+                window.location.href=`${editUrl}${id}`;
+                //$.ajax({
+                //    url: `${infoUrl}${id}`,
+                //    type: "get",
+                //    dataType: "json",
+                //    success: function (response) {
+                //        for (var p in response) {
+                //            $(`input[name='${p}']`).val(response[p]);
+                //        }
+                //    },
+                //    error: function (err) { }
+                //})
+            })
+
+            $("#update").click(function () {
+                const id = $(`input[name='ID']`).val();
+               
+                $.ajax({
+                    url: `${editUrl}${id}`,
+                    type: "put",
+                    dataType: "json",
+                    data: $("form").serialize(),
+                    success: function (response) {
+                        Load();
+                        $("form")[0].reset();
+                    },
+                    error: function (err) { }
+                })
+
+            })
+
+            $(document).on("click", ".delete", function () {
+                const id = $(this).data("id");
+                $.ajax({
+                    url: `${deleteUrl}${id}`,
+                    type: "delete",
+                    dataType: "json",
+                    success: function (response) {
+                        Load();
+                        $("form")[0].reset();
+                    },
+                    error: function (err) { }
+                })
+            })
+
+        })
+
+
+    </script>
+</body>
